@@ -7,9 +7,17 @@ from .models import Player
 from .models import Team
 from .models import Variant
 
+class TeamInline(admin.StackedInline):
+	model = Team
+	extra = 2
+	filter_horizontal = ('players',)
+
+class PlayAdmin(admin.ModelAdmin):
+	inlines = [TeamInline]
+
 admin.site.register(Faction)
 admin.site.register(Game)
-admin.site.register(Play)
+admin.site.register(Play, PlayAdmin)
 admin.site.register(Player)
 admin.site.register(Team)
 admin.site.register(Variant)
