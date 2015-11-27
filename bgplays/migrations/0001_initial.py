@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('minutes', models.IntegerField(null=True, blank=True)),
                 ('date', models.DateField(null=True, blank=True)),
-                ('game', models.ForeignKey(to='stats.Game')),
+                ('game', models.ForeignKey(to='bgplays.Game')),
             ],
         ),
         migrations.CreateModel(
@@ -48,9 +48,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('points', models.IntegerField(null=True, blank=True)),
                 ('winner', models.NullBooleanField()),
-                ('faction', models.ForeignKey(to='stats.Faction', null=True)),
-                ('play', models.ForeignKey(to='stats.Play')),
-                ('players', models.ManyToManyField(to='stats.Player')),
+                ('faction', models.ForeignKey(to='bgplays.Faction', null=True)),
+                ('play', models.ForeignKey(to='bgplays.Play')),
+                ('players', models.ManyToManyField(to='bgplays.Player')),
             ],
         ),
         migrations.CreateModel(
@@ -58,17 +58,17 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=255)),
-                ('game', models.ForeignKey(to='stats.Game')),
+                ('game', models.ForeignKey(to='bgplays.Game')),
             ],
         ),
         migrations.AddField(
             model_name='play',
             name='variant',
-            field=models.ForeignKey(to='stats.Variant', null=True),
+            field=models.ForeignKey(to='bgplays.Variant', null=True),
         ),
         migrations.AddField(
             model_name='faction',
             name='game',
-            field=models.ForeignKey(to='stats.Game'),
+            field=models.ForeignKey(to='bgplays.Game'),
         ),
     ]

@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('stats', '0001_initial'),
+        ('bgplays', '0002_auto_20151126_1906'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='play',
-            name='variant',
-            field=models.ForeignKey(blank=True, to='stats.Variant', null=True),
+            model_name='team',
+            name='faction',
+            field=models.ForeignKey(blank=True, to='bgplays.Faction', null=True),
         ),
     ]
