@@ -10,7 +10,7 @@ from .models import Variant
 class TeamInline(admin.StackedInline):
 	model = Team
 	extra = 2
-	filter_horizontal = ('players',)
+	filter_horizontal = ('players', 'factions',)
 
 class PlayAdmin(admin.ModelAdmin):
 	inlines = [TeamInline]

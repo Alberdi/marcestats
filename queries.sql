@@ -40,6 +40,37 @@ FROM (
 ) AS sub
 GROUP BY sub.name;
 
+-- GAMES PLAYED BY G+S+M IN 2015
+SELECT g.name, play.date, COUNT(*)
+FROM bgplays_play play
+INNER JOIN bgplays_game g ON play.game_id = g.id
+WHERE play.date LIKE '2015%'
+AND play.id IN (
+	SELECT play.id
+	FROM bgplays_play play
+	INNER JOIN bgplays_team t ON play.id = t.play_id
+	INNER JOIN bgplays_team_players tp ON t.id = tp.team_id
+	INNER JOIN bgplays_player p ON p.id = tp.player_id
+	WHERE p.name = 'Marcelino'
+)
+AND play.id IN (
+	SELECT play.id
+	FROM bgplays_play play
+	INNER JOIN bgplays_team t ON play.id = t.play_id
+	INNER JOIN bgplays_team_players tp ON t.id = tp.team_id
+	INNER JOIN bgplays_player p ON p.id = tp.player_id
+	WHERE p.name = 'Guillermo'
+)
+AND play.id IN (
+	SELECT play.id
+	FROM bgplays_play play
+	INNER JOIN bgplays_team t ON play.id = t.play_id
+	INNER JOIN bgplays_team_players tp ON t.id = tp.team_id
+	INNER JOIN bgplays_player p ON p.id = tp.player_id
+	WHERE p.name = 'Sito'
+)
+GROUP BY g.name, play.date;
+
 -- PLAYS BY G+S+M BY DATE
 SELECT play.date, COUNT(*)
 FROM bgplays_play play

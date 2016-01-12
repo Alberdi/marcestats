@@ -2,6 +2,9 @@ from django.db import models
 
 class Game(models.Model):
 	name = models.CharField(max_length=255)
+
+	def cooperatives():
+		print "COOPS!"
 	
 	def __str__(self):
 		return self.name
@@ -47,9 +50,9 @@ class Player(models.Model):
 class Team(models.Model):
 	play = models.ForeignKey(Play)
 	players = models.ManyToManyField(Player)
-	faction = models.ForeignKey(Faction, null=True, blank=True)
+	factions = models.ManyToManyField(Faction)
 	points = models.IntegerField(null=True, blank=True)
 	winner = models.NullBooleanField(null=True)
 
 	def __str__(self):
-		return str((self.play, self.faction, self.points, self.winner))
+		return str((self.play, self.points, self.winner))
