@@ -50,7 +50,7 @@ class Player(models.Model):
 class Team(models.Model):
 	play = models.ForeignKey(Play)
 	players = models.ManyToManyField(Player)
-	factions = models.ManyToManyField(Faction)
+	factions = models.ManyToManyField(Faction, blank=True)
 	points = models.IntegerField(null=True, blank=True)
 	winner = models.NullBooleanField(null=True)
 
