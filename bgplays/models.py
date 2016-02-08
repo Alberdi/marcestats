@@ -33,6 +33,7 @@ class Play(models.Model):
 	minutes = models.IntegerField(null=True, blank=True)
 	date = models.DateField(null=True, blank=True)
 	variant = models.ForeignKey(Variant, null=True, blank=True)
+	comments = models.CharField(null=True, blank=True, max_length=255)
 
 	objects = PlayQuerySet.as_manager()
 
