@@ -1,2 +1,66 @@
-<p>{{ player.name }}</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>BGPlays - {{ player.name }}</title>
+
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
+  </head>
+
+  <body role="document">
+
+    <div class="container theme-showcase" role="main">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Name:</label>
+                </div>
+                <div class="col-lg-8">
+                    <span>{{ player.name }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Birth date:</label>
+                </div>
+                <div class="col-lg-8">
+                    <span>{{ player.birth_date }}</span>
+                </div>
+            </div>
+            {% if most_played_games %}
+            <div class="row">
+                <div class="col-lg-4">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Game</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in most_played_games %}
+                                <tr>
+                                    <td>{{ game.count }}</td>
+                                    <td>{{ game.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+  </body>
+</html>
 
