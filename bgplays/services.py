@@ -1,15 +1,35 @@
 from models import *
+from django.db.models import Count, F
+
+
+# Game info services
+def get_play_count(game_id):
+    return Play.objects.filter(game__id=game_id).count()
+
+
+def get_most_played_players(game_id, count=5):
+    play_players = Play.objects.filter(game__id=game_id) \
+        .annotate(name=F('team__players__name')) \
+        .annotate(pid=F('team__players__id')) \
+        .values('id', 'name', 'pid').distinct()
+    return Player.objects.raw(
+        '''SELECT pid, name, COUNT(*) AS 'count' FROM ( %s )
+           GROUP BY pid ORDER BY COUNT(pid) DESC''' % str(play_players.query),
+        translations={'pid': 'id'})[:count]
+
 
 # Player info services
 def get_most_played_games(player_id, count=5):
     plays_ids = get_play_ids(player_id)
-    return Play.objects.filter(id__in=plays_ids) \
-               .annotate(name=F('game__name')) \
-               .values('name') \
+    return Game.objects.filter(play__id__in=plays_ids) \
+               .values('name', 'id') \
                .annotate(count=Count('name')) \
                .order_by('-count')[:count]
 
+
 def get_most_played_mates(player_id, count=5):
+    # XXX: That distinct() is probably not working as expected
+    # But there are not counterexamples in the current data set
     plays_ids = get_play_ids(player_id)
     return Player.objects.filter(team__play__id__in=plays_ids) \
                .exclude(id=player_id) \
@@ -18,6 +38,7 @@ def get_most_played_mates(player_id, count=5):
                .values('name') \
                .annotate(count=Count('name')) \
                .order_by('-count')[:count]
+
 
 # Helper methods
 def get_play_ids(player_id):
