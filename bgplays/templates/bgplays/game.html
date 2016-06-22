@@ -57,6 +57,31 @@
                                             </table>
                                         </div>
                                     {% endif %}
+                                    {% if most_faction_plays %}
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th colspan="3">Most played factions</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Plays</th>
+                                                    <th>Wins</th>
+                                                    <th>Faction</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for faction in most_faction_plays %}
+                                                    <tr>
+                                                        <td>{{ faction.count }}</td>
+                                                        <td>{{ faction.wins }}</td>
+                                                        <td>{{ faction.description }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 from models import *
-from django.db.models import Count, F
+from django.db.models import Count, F, Sum
 
 
 # Game info services
@@ -18,7 +18,14 @@ def get_most_played_players(game_id, count=5):
         translations={'pid': 'id'})[:count]
 
 
-# Player info services
+def get_most_faction_plays(game_id, count=5):
+    return Faction.objects.filter(game__id=game_id) \
+               .values('description') \
+               .annotate(wins=Sum('team__winner')) \
+               .annotate(count=Count('description')) \
+               .order_by('-count', '-wins')[:count]
+
+
 def get_most_played_games(player_id, count=5):
     plays_ids = get_play_ids(player_id)
     return Game.objects.filter(play__id__in=plays_ids) \
