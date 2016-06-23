@@ -6,6 +6,7 @@ import services
 def game(request, game_id):
     g = get_object_or_404(Game, id=game_id)
     context = {'game': g,
+               'average_points': services.get_avg_points(g.id),
                'play_count': services.get_play_count(g.id),
                'most_faction_plays': services.get_most_faction_plays(g.id),
                'most_played_players': services.get_most_played_players(g.id)}

@@ -1,8 +1,14 @@
 from models import *
-from django.db.models import Count, F, Sum
+from django.db.models import Avg, Count, F, Sum
 
 
 # Game info services
+def get_avg_points(game_id):
+    return Team.objects.filter(play__game__id=game_id) \
+        .exclude(play__team__points__isnull=True) \
+        .aggregate(avg=Avg('play__team__points'))['avg']
+
+
 def get_play_count(game_id):
     return Play.objects.filter(game__id=game_id).count()
 
@@ -26,6 +32,7 @@ def get_most_faction_plays(game_id, count=5):
                .order_by('-count', '-wins')[:count]
 
 
+# Player info services
 def get_most_played_games(player_id, count=5):
     plays_ids = get_play_ids(player_id)
     return Game.objects.filter(play__id__in=plays_ids) \

@@ -8,82 +8,83 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{ game.name }}</h3>
-                    </div>
+                    <div class="panel-heading"><h3 class="panel-title">{{ game.name }}</h3></div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3 col-lg-3" align="center">{{ game.name|gravatar:200 }}</div>
                             <div class="col-md-9 col-lg-9">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <table class="table">
-                                            <tbody>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>{{ game.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Total plays</td>
-                                                <td>{{ play_count }}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    {% if most_played_players %}
-                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                            <table class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th colspan="2">Most played players</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Player</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for player in most_played_players %}
-                                                    <tr>
-                                                        <td>{{ player.count }}</td>
-                                                        <td>
-                                                            <a href="{% url 'player' player_name=player.name %}">{{ player.name }}</a>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>{{ game.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total plays</td>
+                                        <td>{{ play_count }}</td>
+                                    </tr>
+                                    {% if average_points %}
+                                    <tr>
+                                        <td>Average points</td>
+                                        <td>{{ average_points|floatformat:2 }}</td>
+                                    </tr>
                                     {% endif %}
-                                    {% if most_faction_plays %}
-                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                            <table class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th colspan="3">Most played factions</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Plays</th>
-                                                    <th>Wins</th>
-                                                    <th>Faction</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for faction in most_faction_plays %}
-                                                    <tr>
-                                                        <td>{{ faction.count }}</td>
-                                                        <td>{{ faction.wins }}</td>
-                                                        <td>{{ faction.description }}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    {% endif %}
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            {% if most_played_players %}
+                                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Most played players</th>
+                                        </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Player</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for player in most_played_players %}
+                                            <tr>
+                                                <td>{{ player.count }}</td>
+                                                <td>
+                                                    <a href="{% url 'player' player_name=player.name %}">{{ player.name }}</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                            {% if most_faction_plays %}
+                                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="3">Most played factions</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Plays</th>
+                                            <th>Wins</th>
+                                            <th>Faction</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for faction in most_faction_plays %}
+                                            <tr>
+                                                <td>{{ faction.count }}</td>
+                                                <td>{{ faction.wins }}</td>
+                                                <td>{{ faction.description }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="panel-footer">
@@ -91,4 +92,5 @@
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}
