@@ -23,10 +23,10 @@
                                         <td>Total plays</td>
                                         <td>{{ play_count }}</td>
                                     </tr>
-                                    {% if average_points %}
+                                    {% if median_points %}
                                     <tr>
-                                        <td>Average points</td>
-                                        <td>{{ average_points|floatformat:2 }}</td>
+                                        <td>Median points</td>
+                                        <td>{{ median_points|floatformat:-2 }}</td>
                                     </tr>
                                     {% endif %}
                                     </tbody>

@@ -3,10 +3,10 @@ from django.db.models import Avg, Count, F, Sum
 
 
 # Game info services
-def get_avg_points(game_id):
-    return Team.objects.filter(play__game__id=game_id) \
-        .exclude(play__team__points__isnull=True) \
-        .aggregate(avg=Avg('play__team__points'))['avg']
+def get_median_points(game_id):
+    return median_value(Team.objects.filter(play__game__id=game_id) \
+                        .exclude(play__team__points__isnull=True),
+                        'play__team__points')
 
 
 def get_play_count(game_id):
@@ -57,3 +57,12 @@ def get_most_played_mates(player_id, count=5):
 # Helper methods
 def get_play_ids(player_id):
     return Play.objects.filter(team__players__id=player_id).values('id').distinct()
+
+
+def median_value(queryset, term):
+    count = queryset.count()
+    values = queryset.values_list(term, flat=True).order_by(term)
+    if count % 2 == 1:
+        return values[int(round(count / 2))]
+    else:
+        return sum(values[count / 2 - 1:count / 2 + 1]) / 2.0
