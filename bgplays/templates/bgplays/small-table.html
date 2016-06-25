@@ -1,0 +1,61 @@
+{% load querystring from django_tables2 %}
+{% load i18n %}
+{% load blocktrans trans from i18n %}
+
+<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+    {% block table %}
+        <table class="table table-bordered table-striped"{% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
+            {% block table.thead %}
+                <thead>
+                {% if table.title %}
+                    <tr>
+                        <th colspan="{{ table.columns|length }}">{{ table.title }}</th>
+                    </tr>
+                {% endif %}
+                <tr>
+                    {% for column in table.columns %}
+                        {% if column.orderable %}
+                            <th {{ column.attrs.th.as_html }}>
+                                <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }}</a>
+                            </th>
+                        {% else %}
+                            <th {{ column.attrs.th.as_html }}>{{ column.header }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                </thead>
+            {% endblock table.thead %}
+            {% block table.tbody %}
+                <tbody>
+                {% for row in table.page.object_list|default:table.rows %} {# support pagination #}
+                    {% block table.tbody.row %}
+                        <tr {{ row.attrs.as_html }}>
+                            {% for column, cell in row.items %}
+                                <td {{ column.attrs.td.as_html }}>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endblock table.tbody.row %}
+                {% empty %}
+                    {% block table.tbody.empty_text %}
+                        {% trans "no results" as table_empty_text %}
+                        <tr>
+                            <td colspan="{{ table.columns|length }}">{{ table.empty_text|default:table_empty_text }}</td>
+                        </tr>
+                    {% endblock table.tbody.empty_text %}
+                {% endfor %}
+                </tbody>
+            {% endblock table.tbody %}
+            {% block table.tfoot %}
+                {% if table.has_footer %}
+                    <tfoot>
+                    <tr>
+                        {% for column in table.columns %}
+                            <td>{{ column.footer }}</td>
+                        {% endfor %}
+                    </tr>
+                    </tfoot>
+                {% endif %}
+            {% endblock table.tfoot %}
+        </table>
+    {% endblock table %}
+</div>

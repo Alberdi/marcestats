@@ -18,10 +18,10 @@ class Variant(models.Model):
 
 class Faction(models.Model):
     game = models.ForeignKey(Game)
-    description = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
-        return str((self.game, self.description))
+        return str((self.game, self.name))
 
 
 class Play(models.Model):
