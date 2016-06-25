@@ -7,10 +7,10 @@ import services
 
 def game(r, game_id):
     g = get_object_or_404(Game, id=game_id)
-    faction_plays = tablify(services.get_faction_plays(g.id), tables.FactionTable, r)
-    faction_plays.title = 'Factions'
-    game_players = tablify(services.get_game_players(g.id), tables.PlayerTable, r)
-    game_players.title = 'Players'
+    faction_plays = tablify(services.get_faction_plays(g.id),
+                            tables.FactionTable, r, 'Factions')
+    game_players = tablify(services.get_game_players(g.id),
+                           tables.PlayerTable, r, 'Players')
     context = {'game': g,
                'median_points': services.get_median_points(g.id),
                'play_count': services.get_play_count(g.id),
@@ -21,10 +21,10 @@ def game(r, game_id):
 
 def player(r, player_name):
     p = get_object_or_404(Player, name=player_name)
-    player_games = tablify(services.get_player_games(p.id), tables.GameTable, r)
-    player_games.title = 'Played games'
-    player_mates = tablify(services.get_player_mates(p.id), tables.PlayerTable, r)
-    player_mates.title = 'Mates'
+    player_games = tablify(services.get_player_games(p.id),
+                           tables.GameTable, r, 'Played games')
+    player_mates = tablify(services.get_player_mates(p.id),
+                           tables.PlayerTable, r, 'Mates')
     context = {'player': p,
                'player_games': player_games,
                'player_mates': player_mates}
@@ -32,7 +32,8 @@ def player(r, player_name):
 
 
 # Helper methods
-def tablify(data, TableClass, request):
+def tablify(data, TableClass, request, title=None):
     table = TableClass(data)
+    table.title = title
     RequestConfig(request).configure(table)
     return table

@@ -12,6 +12,7 @@ class SmallTable(tables.Table):
 class FactionTable(SmallTable):
     count = tables.Column()
     wins = tables.Column()
+    percentage = tables.Column()
 
     class Meta(SmallTable.Meta):
         model = Faction
@@ -32,6 +33,8 @@ class GameTable(SmallTable):
 class PlayerTable(SmallTable):
     count = tables.Column()
     name = tables.LinkColumn('player', args=[A('name')])
+    wins = tables.Column()
+    percentage = tables.Column()
 
     class Meta(SmallTable.Meta):
         model = Player

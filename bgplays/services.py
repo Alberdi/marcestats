@@ -1,5 +1,6 @@
 from models import *
-from django.db.models import Avg, Count, F, Sum
+from django.db.models import Count, fields, F, Sum
+from django.db.models.expressions import ExpressionWrapper
 
 
 # Game info services
@@ -16,11 +17,14 @@ def get_play_count(game_id):
 def get_game_players(game_id):
     play_players = Play.objects.filter(game__id=game_id) \
         .annotate(name=F('team__players__name')) \
+        .annotate(winner=F('team__winner')) \
         .annotate(pid=F('team__players__id')) \
-        .values('id', 'name', 'pid').distinct()
+        .values('id', 'name', 'pid', 'winner').distinct()
     return Player.objects.raw(
-        '''SELECT pid, name, COUNT(*) AS 'count' FROM ( %s )
-           GROUP BY pid ORDER BY COUNT(pid) DESC''' % str(play_players.query),
+        '''SELECT pid, name, COUNT(DISTINCT id) AS 'count', SUM(winner) AS 'wins',
+           100*SUM(winner)/COUNT(DISTINCT id) AS 'percentage'
+           FROM ( %s )
+           GROUP BY pid ORDER BY COUNT(id) DESC, SUM(winner) DESC''' % str(play_players.query),
         translations={'pid': 'id'})
 
 
@@ -29,6 +33,7 @@ def get_faction_plays(game_id):
         .values('name') \
         .annotate(wins=Sum('team__winner')) \
         .annotate(count=Count('name')) \
+        .annotate(percentage=ExpressionWrapper(100 * F('wins') / F('count'), output_field=fields.IntegerField())) \
         .order_by('-count', '-wins')
 
 
@@ -51,6 +56,8 @@ def get_player_mates(player_id):
         .distinct() \
         .values('name') \
         .annotate(count=Count('name')) \
+        .annotate(wins=Sum('team__winner')) \
+        .annotate(percentage=ExpressionWrapper(100 * F('wins') / F('count'), output_field=fields.IntegerField())) \
         .order_by('-count')
 
 
