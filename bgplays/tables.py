@@ -2,6 +2,14 @@ import django_tables2 as tables
 from django_tables2.utils import A
 from .models import *
 
+DATE_FORMAT = "d/m/o"
+
+
+class PagedTable(tables.Table):
+    class Meta:
+        template = 'bgplays/paged-table.html'
+        per_page = 20
+
 
 class SmallTable(tables.Table):
     class Meta:
@@ -19,6 +27,11 @@ class FactionTable(SmallTable):
         exclude = ('id', 'game',)
         prefix = 'faction'
 
+class GameListTable(PagedTable):
+    name = tables.LinkColumn('game', args=[A('id')])
+
+    class Meta(PagedTable.Meta):
+        model = Game
 
 class GameTable(SmallTable):
     count = tables.Column()
@@ -28,6 +41,14 @@ class GameTable(SmallTable):
         model = Game
         exclude = ('id',)
         prefix = 'game'
+
+
+class PlayerListTable(PagedTable):
+    birth_date = tables.DateColumn(DATE_FORMAT)
+    name = tables.LinkColumn('player', args=[A('name')])
+
+    class Meta(PagedTable.Meta):
+        model = Player
 
 
 class PlayerTable(SmallTable):

@@ -18,5 +18,17 @@
     {% bootstrap_javascript %}
     {% bootstrap_messages %}
 </head>
-<body role="document">{% block content %}{% endblock %}</body>
+<body role="document" style="padding-top: 70px;">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="{% if request.path == '/player' %}active{% endif %}"><a href="/player">Players</a></li>
+                <li class="{% if request.path == '/game' %}active{% endif %}"><a href="/game">Games</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+{% block content %}{% endblock %}
+</body>
 </html>

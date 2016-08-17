@@ -5,6 +5,13 @@ import tables
 import services
 
 
+def game_list(r):
+    games = tablify(Game.objects.all(),
+                    tables.GameListTable, r)
+    context = {'games': games}
+    return render(r, 'bgplays/game_list.html', context)
+
+
 def game(r, game_id):
     g = get_object_or_404(Game, id=game_id)
     faction_plays = tablify(services.get_faction_plays(g.id),
@@ -17,6 +24,13 @@ def game(r, game_id):
                'faction_plays': faction_plays,
                'game_players': game_players}
     return render(r, 'bgplays/game.html', context)
+
+
+def player_list(r):
+    players = tablify(Player.objects.all(),
+                      tables.PlayerListTable, r)
+    context = {'players': players}
+    return render(r, 'bgplays/player_list.html', context)
 
 
 def player(r, player_name):
