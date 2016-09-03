@@ -6,7 +6,7 @@ import services
 
 
 def game_list(r):
-    games = tablify(Game.objects.all(),
+    games = tablify(services.get_game_list(),
                     tables.GameListTable, r)
     context = {'games': games}
     return render(r, 'bgplays/game_list.html', context)

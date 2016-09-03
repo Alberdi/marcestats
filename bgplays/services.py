@@ -1,5 +1,5 @@
 from models import *
-from django.db.models import Count, fields, F, Sum
+from django.db.models import Count, fields, F, Max, Sum
 from django.db.models.expressions import ExpressionWrapper
 
 
@@ -12,6 +12,14 @@ def get_median_points(game_id):
 
 def get_play_count(game_id):
     return Play.objects.filter(game__id=game_id).count()
+
+
+def get_game_list():
+    games = Game.objects.all() \
+        .annotate(plays=Count('play__id')) \
+        .annotate(last_played=Max('play__date')) \
+        .order_by('-plays')
+    return games
 
 
 def get_game_players(game_id):

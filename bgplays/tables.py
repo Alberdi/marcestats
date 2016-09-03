@@ -27,11 +27,16 @@ class FactionTable(SmallTable):
         exclude = ('id', 'game',)
         prefix = 'faction'
 
+
 class GameListTable(PagedTable):
+    last_played = tables.DateColumn(DATE_FORMAT)
     name = tables.LinkColumn('game', args=[A('id')])
+    plays = tables.Column()
 
     class Meta(PagedTable.Meta):
         model = Game
+        exclude = ('id',)
+
 
 class GameTable(SmallTable):
     count = tables.Column()
