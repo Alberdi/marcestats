@@ -19,6 +19,7 @@ from bgplays import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^index.html', views.game_list),
     url(r'^game$', views.game_list),
     url(r'^game/(?P<game_id>.+)/$', views.game, name='game'),
     url(r'^player$', views.player_list),
