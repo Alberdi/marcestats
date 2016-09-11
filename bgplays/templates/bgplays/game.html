@@ -16,7 +16,11 @@
                     </tr>
                     <tr>
                         <td>Total plays</td>
-                        <td>{{ play_count }}</td>
+                        <td>{{ game.plays }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last played</td>
+                        <td>{{ game.last_played }}</td>
                     </tr>
                     {% if median_points %}
                         <tr>

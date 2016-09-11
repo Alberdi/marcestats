@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django_tables2 import RequestConfig
 from .models import *
@@ -13,28 +14,29 @@ def game_list(r):
 
 
 def game(r, game_id):
-    g = get_object_or_404(Game, id=game_id)
+    g = services.get_game_list().filter(id=game_id).first()
+    if not g: raise Http404('Game not found')
     faction_plays = tablify(services.get_faction_plays(g.id),
                             tables.FactionTable, r, 'Factions')
     game_players = tablify(services.get_game_players(g.id),
                            tables.PlayerTable, r, 'Players')
     context = {'game': g,
                'median_points': services.get_median_points(g.id),
-               'play_count': services.get_play_count(g.id),
                'faction_plays': faction_plays,
                'game_players': game_players}
     return render(r, 'bgplays/game.html', context)
 
 
 def player_list(r):
-    players = tablify(Player.objects.all(),
+    players = tablify(services.get_player_list(),
                       tables.PlayerListTable, r)
     context = {'players': players}
     return render(r, 'bgplays/player_list.html', context)
 
 
 def player(r, player_name):
-    p = get_object_or_404(Player, name=player_name)
+    p = services.get_player_list().filter(name=player_name).first()
+    if not p: raise Http404('Player not found')
     player_games = tablify(services.get_player_games(p.id),
                            tables.GameTable, r, 'Played games')
     player_mates = tablify(services.get_player_mates(p.id),

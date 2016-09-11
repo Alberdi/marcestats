@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 	'django_extensions',
 	'django_tables2',
+	'debug_toolbar',
 	'bootstrap3',
 	'bgplays',
 )

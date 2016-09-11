@@ -54,6 +54,21 @@ def get_player_games(player_id):
         .order_by('-count')
 
 
+def get_player_list():
+    # The plays calculation takes a lot.
+    # TODO: We should find another way to fetch them.
+    players = Player.objects.all() \
+        .annotate(last_played=Max('team__play__date')) \
+        .extra(select={
+        'plays': 'SELECT COUNT(*) FROM '
+                 'COUNT((SELECT DISTINCT bgplays_play.id FROM bgplays_play '
+                 'INNER JOIN bgplays_team ON bgplays_play.id = bgplays_team.play_id '
+                 'INNER JOIN bgplays_team_players ON bgplays_team.id = bgplays_team_players.team_id '
+                 'WHERE bgplays_team_players.player_id = bgplays_player.id))'}, ) \
+        .order_by('-plays', '-last_played')
+    return players
+
+
 def get_player_mates(player_id):
     # XXX: That distinct() is probably not working as expected
     # But there are not counterexamples in the current data set
@@ -64,8 +79,6 @@ def get_player_mates(player_id):
         .distinct() \
         .values('name') \
         .annotate(count=Count('name')) \
-        .annotate(wins=Sum('team__winner')) \
-        .annotate(percentage=ExpressionWrapper(100 * F('wins') / F('count'), output_field=fields.IntegerField())) \
         .order_by('-count')
 
 

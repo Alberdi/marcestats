@@ -51,16 +51,17 @@ class GameTable(SmallTable):
 class PlayerListTable(PagedTable):
     birth_date = tables.DateColumn(DATE_FORMAT)
     name = tables.LinkColumn('player', args=[A('name')])
+    last_played = tables.DateColumn(DATE_FORMAT)
+    plays = tables.Column()
 
     class Meta(PagedTable.Meta):
         model = Player
+        exclude = ('id',)
 
 
 class PlayerTable(SmallTable):
     count = tables.Column()
     name = tables.LinkColumn('player', args=[A('name')])
-    wins = tables.Column()
-    percentage = tables.Column()
 
     class Meta(SmallTable.Meta):
         model = Player
