@@ -61,10 +61,10 @@ def get_player_list():
         .annotate(last_played=Max('team__play__date')) \
         .extra(select={
         'plays': 'SELECT COUNT(*) FROM '
-                 'COUNT((SELECT DISTINCT bgplays_play.id FROM bgplays_play '
+                 '(SELECT DISTINCT bgplays_play.id FROM bgplays_play '
                  'INNER JOIN bgplays_team ON bgplays_play.id = bgplays_team.play_id '
                  'INNER JOIN bgplays_team_players ON bgplays_team.id = bgplays_team_players.team_id '
-                 'WHERE bgplays_team_players.player_id = bgplays_player.id))'}, ) \
+                 'WHERE bgplays_team_players.player_id = bgplays_player.id)'}, ) \
         .order_by('-plays', '-last_played')
     return players
 
