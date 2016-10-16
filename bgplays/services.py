@@ -29,8 +29,7 @@ def get_game_players(game_id):
         .annotate(pid=F('team__players__id')) \
         .values('id', 'name', 'pid', 'winner').distinct()
     return Player.objects.raw(
-        '''SELECT pid, name, COUNT(DISTINCT id) AS 'count', SUM(winner) AS 'wins',
-           100*SUM(winner)/COUNT(DISTINCT id) AS 'percentage'
+        '''SELECT pid, name, COUNT(DISTINCT id) AS 'count', SUM(winner) AS 'wins'
            FROM ( %s )
            GROUP BY pid ORDER BY COUNT(id) DESC, SUM(winner) DESC''' % str(play_players.query),
         translations={'pid': 'id'})
@@ -41,7 +40,6 @@ def get_faction_plays(game_id):
         .values('name') \
         .annotate(wins=Sum('team__winner')) \
         .annotate(count=Count('name')) \
-        .annotate(percentage=ExpressionWrapper(100 * F('wins') / F('count'), output_field=fields.IntegerField())) \
         .order_by('-count', '-wins')
 
 
@@ -49,7 +47,14 @@ def get_faction_plays(game_id):
 def get_player_games(player_id):
     plays_ids = get_play_ids(player_id)
     return Game.objects.filter(play__id__in=plays_ids) \
-        .values('name', 'id') \
+        .extra(select={
+        'wins': 'SELECT COUNT(DISTINCT bgplays_team.play_id) FROM bgplays_team '
+                'INNER JOIN bgplays_team_players ON bgplays_team.id = bgplays_team_players.team_id '
+                'INNER JOIN bgplays_play ON bgplays_play.id = bgplays_team.play_id '
+                'WHERE winner = 1 '
+                'AND bgplays_play.game_id = bgplays_game.id '
+                'AND bgplays_team_players.player_id = % s' % player_id}, ) \
+        .values('name', 'id', 'wins') \
         .annotate(count=Count('name')) \
         .order_by('-count')
 

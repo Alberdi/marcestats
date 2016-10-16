@@ -40,7 +40,7 @@ def player(r, player_name):
     player_games = tablify(services.get_player_games(p.id),
                            tables.GameTable, r, 'Played games')
     player_mates = tablify(services.get_player_mates(p.id),
-                           tables.PlayerTable, r, 'Mates')
+                           tables.PlayerMatesTable, r, 'Mates')
     context = {'player': p,
                'player_games': player_games,
                'player_mates': player_mates}

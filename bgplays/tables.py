@@ -20,7 +20,6 @@ class SmallTable(tables.Table):
 class FactionTable(SmallTable):
     count = tables.Column()
     wins = tables.Column()
-    percentage = tables.Column()
 
     class Meta(SmallTable.Meta):
         model = Faction
@@ -40,6 +39,7 @@ class GameListTable(PagedTable):
 
 class GameTable(SmallTable):
     count = tables.Column()
+    wins = tables.Column()
     name = tables.LinkColumn('game', args=[A('id')])
 
     class Meta(SmallTable.Meta):
@@ -61,9 +61,20 @@ class PlayerListTable(PagedTable):
 
 class PlayerTable(SmallTable):
     count = tables.Column()
+    wins = tables.Column()
     name = tables.LinkColumn('player', args=[A('name')])
 
     class Meta(SmallTable.Meta):
         model = Player
         exclude = ('id', 'gender', 'birth_date',)
         prefix = 'player'
+
+
+class PlayerMatesTable(SmallTable):
+    count = tables.Column()
+    name = tables.LinkColumn('player', args=[A('name')])
+
+    class Meta(SmallTable.Meta):
+        model = Player
+        exclude = ('id', 'gender', 'birth_date',)
+        prefix = 'mate'
