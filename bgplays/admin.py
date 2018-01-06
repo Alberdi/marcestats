@@ -14,6 +14,7 @@ class TeamInline(admin.StackedInline):
 
 class PlayAdmin(admin.ModelAdmin):
 	inlines = [TeamInline]
+	save_as = True
 
 admin.site.register(Faction)
 admin.site.register(Game)
