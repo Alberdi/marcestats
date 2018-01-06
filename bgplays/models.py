@@ -33,6 +33,7 @@ class Play(models.Model):
     game = models.ForeignKey(Game)
     minutes = models.IntegerField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
+    virtual = models.BooleanField(default=False)
     variant = models.ForeignKey(Variant, null=True, blank=True)
     comments = models.CharField(null=True, blank=True, max_length=255)
 
