@@ -2,7 +2,12 @@ from django.db import models
 
 
 class Game(models.Model):
+    BOARD_GAME = 'B'
+    RPG = 'R'
+    TYPE_CHOICES = ((BOARD_GAME, 'Board game'), (RPG, 'Role-playing game'))
     name = models.CharField(max_length=255)
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES,
+                            default=BOARD_GAME)
 
     def __str__(self):
         return self.name
