@@ -28,6 +28,10 @@ class FactionTable(SmallTable):
 
 
 class GameListTable(PagedTable):
+    geek_id = tables.TemplateColumn(
+        '{% if record.geek_id %}'
+            '<a href="{{record.geek_url}}">{{record.geek_id}}</a>'
+        '{% endif %}')
     last_played = tables.DateColumn(DATE_FORMAT)
     name = tables.LinkColumn('game', args=[A('id')])
     plays = tables.Column()

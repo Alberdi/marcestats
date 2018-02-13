@@ -1,6 +1,5 @@
 from models import *
-from django.db.models import Count, fields, F, Max, Sum
-from django.db.models.expressions import ExpressionWrapper
+from django.db.models import Count, F, Max, Sum
 
 
 # Game info services

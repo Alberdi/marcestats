@@ -10,10 +10,12 @@
             <div class="col-md-9 col-lg-9">
                 <table class="table">
                     <tbody>
-                    <tr>
-                        <td>Name</td>
-                        <td>{{ game.name }}</td>
-                    </tr>
+                    {% if game.geek_id %}
+                        <tr>
+                            <td>Geek</td>
+                            <td><a href="{{ game.geek_url }}">{{ game.geek_id }}</a></td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <td>Total plays</td>
                         <td>{{ game.plays }}</td>

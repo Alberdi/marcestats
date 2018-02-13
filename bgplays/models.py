@@ -5,9 +5,19 @@ class Game(models.Model):
     BOARD_GAME = 'B'
     RPG = 'R'
     TYPE_CHOICES = ((BOARD_GAME, 'Board game'), (RPG, 'Role-playing game'))
+    geek_id = models.IntegerField(null=True)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=1, choices=TYPE_CHOICES,
                             default=BOARD_GAME)
+
+    def geek_url(self):
+        if not self.geek_id:
+            return None
+        if self.type == self.RPG:
+            return "https://rpggeek.com/rpgitem/" + str(self.geek_id)
+        else:
+            return "https://boardgamegeek.com/boardgame/" + str(self.geek_id)
+
 
     def __str__(self):
         return self.name
