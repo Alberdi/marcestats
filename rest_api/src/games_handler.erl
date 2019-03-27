@@ -4,7 +4,7 @@
 -export([init/2]).
 
 init(Req0, State) ->
-    Games = name_fields([id, name], game_list()),
+    Games = utils:name_fields([id, name], game_list()),
     LinkedGames = append_links(Req0, Games),
     Req = cowboy_req:reply(200,
         #{<<"content-type">> => <<"application/json">>},
@@ -36,13 +36,5 @@ append_link(BaseURL, [H|T], Acc) ->
 game_list() ->
     {ok, DbPath} = application:get_env(rest_api, dbpath),
     {ok, Db} = esqlite3:open(DbPath),
-    esqlite3:q("SELECT id, name FROM bgplays_game;", Db).
-
-name_fields(Fields, Rows) ->
-    name_fields(Fields, Rows, []).
-name_fields(_, [], Acc) ->
-    Acc;
-name_fields(Fields, [Row|Rest], Acc) ->
-    NewList = [{lists:zip(Fields, tuple_to_list(Row))}|Acc],
-    name_fields(Fields, Rest, NewList).
+    esqlite3:q("SELECT id, name, geek_id FROM bgplays_game;", Db).
 
