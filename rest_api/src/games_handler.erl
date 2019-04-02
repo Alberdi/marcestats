@@ -36,5 +36,5 @@ append_link(BaseURL, [H|T], Acc) ->
 game_list() ->
     {ok, DbPath} = application:get_env(rest_api, dbpath),
     {ok, Db} = esqlite3:open(DbPath),
-    esqlite3:q("SELECT id, name, geek_id FROM bgplays_game;", Db).
+    esqlite3:q("SELECT id, name FROM bgplays_game;", Db).
 
