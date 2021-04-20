@@ -10,8 +10,9 @@ register = template.Library()
 @register.filter
 def gravatar_url(name, size=40):
     name += "@marcestats.com"
+    name = name.encode('utf-8')
     return "https://www.gravatar.com/avatar/%s?%s" % (
-    hashlib.md5(name).hexdigest(), urllib.urlencode({'d': 'identicon', 's': str(size)}))
+    hashlib.md5(name).hexdigest(), urllib.parse.urlencode({'d': 'identicon', 's': str(size)}))
 
 # return an image tag with the gravatar
 # TEMPLATE USE:  {{ name|gravatar:150 }}

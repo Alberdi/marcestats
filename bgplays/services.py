@@ -1,4 +1,4 @@
-from models import *
+from .models import *
 from django.db.models import Count, F, Max, Sum
 
 

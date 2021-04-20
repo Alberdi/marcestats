@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('minutes', models.IntegerField(null=True, blank=True)),
                 ('date', models.DateField(null=True, blank=True)),
-                ('game', models.ForeignKey(to='bgplays.Game')),
+                ('game', models.ForeignKey(to='bgplays.Game', on_delete=models.DO_NOTHING)),
             ],
         ),
         migrations.CreateModel(
@@ -48,8 +48,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('points', models.IntegerField(null=True, blank=True)),
                 ('winner', models.NullBooleanField()),
-                ('faction', models.ForeignKey(to='bgplays.Faction', null=True)),
-                ('play', models.ForeignKey(to='bgplays.Play')),
+                ('faction', models.ForeignKey(to='bgplays.Faction', null=True, on_delete=models.DO_NOTHING)),
+                ('play', models.ForeignKey(to='bgplays.Play', on_delete=models.DO_NOTHING)),
                 ('players', models.ManyToManyField(to='bgplays.Player')),
             ],
         ),
@@ -58,17 +58,17 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=255)),
-                ('game', models.ForeignKey(to='bgplays.Game')),
+                ('game', models.ForeignKey(to='bgplays.Game', on_delete=models.DO_NOTHING)),
             ],
         ),
         migrations.AddField(
             model_name='play',
             name='variant',
-            field=models.ForeignKey(to='bgplays.Variant', null=True),
+            field=models.ForeignKey(to='bgplays.Variant', null=True, on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='faction',
             name='game',
-            field=models.ForeignKey(to='bgplays.Game'),
+            field=models.ForeignKey(to='bgplays.Game', on_delete=models.DO_NOTHING),
         ),
     ]

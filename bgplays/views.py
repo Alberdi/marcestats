@@ -2,45 +2,45 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django_tables2 import RequestConfig
 from .models import *
-import tables
-import services
+from .services import *
+from .tables import *
 
 
 def game_list(r):
-    games = tablify(services.get_game_list(),
-                    tables.GameListTable, r)
+    games = tablify(get_game_list(),
+                    GameListTable, r)
     context = {'games': games}
     return render(r, 'bgplays/game_list.html', context)
 
 
 def game(r, game_id):
-    g = services.get_game_list().filter(id=game_id).first()
+    g = get_game_list().filter(id=game_id).first()
     if not g: raise Http404('Game not found')
-    faction_plays = tablify(services.get_faction_plays(g.id),
-                            tables.FactionTable, r, 'Factions')
-    game_players = tablify(services.get_game_players(g.id),
-                           tables.PlayerTable, r, 'Players')
+    faction_plays = tablify(get_faction_plays(g.id),
+                            FactionTable, r, 'Factions')
+    game_players = tablify(get_game_players(g.id),
+                           PlayerTable, r, 'Players')
     context = {'game': g,
-               'median_points': services.get_median_points(g.id),
+               'median_points': get_median_points(g.id),
                'faction_plays': faction_plays,
                'game_players': game_players}
     return render(r, 'bgplays/game.html', context)
 
 
 def player_list(r):
-    players = tablify(services.get_player_list(),
-                      tables.PlayerListTable, r)
+    players = tablify(get_player_list(),
+                      PlayerListTable, r)
     context = {'players': players}
     return render(r, 'bgplays/player_list.html', context)
 
 
 def player(r, player_name):
-    p = services.get_player_list().filter(name=player_name).first()
+    p = get_player_list().filter(name=player_name).first()
     if not p: raise Http404('Player not found')
-    player_games = tablify(services.get_player_games(p.id),
-                           tables.GameTable, r, 'Played games')
-    player_mates = tablify(services.get_player_mates(p.id),
-                           tables.PlayerMatesTable, r, 'Mates')
+    player_games = tablify(get_player_games(p.id),
+                           GameTable, r, 'Played games')
+    player_mates = tablify(get_player_mates(p.id),
+                           PlayerMatesTable, r, 'Mates')
     context = {'player': p,
                'player_games': player_games,
                'player_mates': player_mates}

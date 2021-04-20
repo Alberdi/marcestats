@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='team',
             name='faction',
-            field=models.ForeignKey(blank=True, to='bgplays.Faction', null=True),
+            field=models.ForeignKey(blank=True, to='bgplays.Faction', null=True,
+                                    on_delete=models.DO_NOTHING),
         ),
     ]

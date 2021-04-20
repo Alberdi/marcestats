@@ -18,7 +18,7 @@ from django.contrib import admin
 from bgplays import views
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^index.html', views.game_list),
     url(r'^game$', views.game_list),
     url(r'^game/(?P<game_id>.+)/$', views.game, name='game'),

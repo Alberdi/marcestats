@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='play',
             name='variant',
-            field=models.ForeignKey(blank=True, to='bgplays.Variant', null=True),
+            field=models.ForeignKey(blank=True, to='bgplays.Variant', null=True,
+                                    on_delete=models.DO_NOTHING),
         ),
     ]

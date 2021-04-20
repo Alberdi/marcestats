@@ -24,7 +24,7 @@ class Game(models.Model):
 
 
 class Variant(models.Model):
-    game = models.ForeignKey(Game)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     description = models.CharField(max_length=255)
 
     def __str__(self):
@@ -32,7 +32,7 @@ class Variant(models.Model):
 
 
 class Faction(models.Model):
-    game = models.ForeignKey(Game)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -40,11 +40,12 @@ class Faction(models.Model):
 
 
 class Play(models.Model):
-    game = models.ForeignKey(Game)
+    game = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
     minutes = models.IntegerField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     virtual = models.BooleanField(default=False)
-    variant = models.ForeignKey(Variant, null=True, blank=True)
+    variant = models.ForeignKey(Variant, null=True, blank=True,
+                                on_delete=models.DO_NOTHING)
     comments = models.CharField(null=True, blank=True, max_length=255)
 
     def __str__(self):
@@ -68,7 +69,7 @@ class Player(models.Model):
 
 
 class Team(models.Model):
-    play = models.ForeignKey(Play)
+    play = models.ForeignKey(Play, on_delete=models.DO_NOTHING)
     players = models.ManyToManyField(Player)
     factions = models.ManyToManyField(Faction, blank=True)
     points = models.IntegerField(null=True, blank=True)
