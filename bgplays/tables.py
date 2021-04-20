@@ -9,12 +9,14 @@ class PagedTable(tables.Table):
     class Meta:
         template = 'bgplays/paged-table.html'
         per_page = 20
+        attrs = {'class': 'table table-bordered table-striped'}
 
 
 class SmallTable(tables.Table):
     class Meta:
         template = 'bgplays/small-table.html'
         per_page = 5
+        attrs = {'class': 'table table-bordered table-striped'}
 
 
 class FactionTable(SmallTable):

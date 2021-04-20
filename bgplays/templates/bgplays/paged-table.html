@@ -4,7 +4,7 @@
 
 <div class="table-container">
     {% block table %}
-        <table class="table table-bordered table-striped"{% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
+        <table {% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
             {% block table.thead %}
                 <thead>
                 <tr>

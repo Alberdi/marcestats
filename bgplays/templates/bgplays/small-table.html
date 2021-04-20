@@ -5,7 +5,7 @@
 {% if table.page.object_list %}
     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
         {% block table %}
-            <table class="table table-bordered table-striped"{% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
+            <table {% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
                 {% block table.thead %}
                     <thead>
                     {% if table.title %}
